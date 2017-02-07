@@ -1,16 +1,35 @@
 execute pathogen#infect()
+"noremap <LeftRelease> "+y<LeftRelease>
+"set guioptions+=a
+let mapleader = ","
+let g:mapleader = ","
 set ruler
+set showcmd
+set synmaxcol=128
+set ttyfast
+set ttyscroll=3 
+set lazyredraw 
+set incsearch
+set laststatus=2
+set autowrite
+set tabstop=2
+set shiftwidth=2
+set expandtab
+set list listchars=tab:»·,trail:·,nbsp:·
+set nojoinspaces
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set nocompatible              " be iMproved, required
+"set clipboard=unnamedplus
 set mouse=a
-set guifont=Menlo:h13
+set guifont=Monaco:h13
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/vundle'
 Plugin 'tomtom/tlib_vim'
 Plugin 'mileszs/ack.vim'
-"Plugin 'garbas/vim-snipmate'
+Plugin 'majutsushi/tagbar'
+Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'altercation/vim-colors-solarized'
 Plugin 'tpope/vim-surround'
@@ -26,12 +45,9 @@ Plugin 'renyard/vim-git-flow-format'
 Plugin 'tibabit/vim-todo'
 Plugin 'rstacruz/sparkup'
 Plugin 'othree/html5.vim'
-"Plugin 'muansari96/vimify'
-"ControlP
-"RAILS AND RUBY 
+Plugin 'ain/vim-capistrano'
 Plugin 'tpope/vim-rails'
 Plugin 'vim-ruby/vim-ruby'
-Plugin 'tpope/vim-endwise'
 Plugin 'tpope/vim-bundler'
 Plugin 'slim-template/vim-slim'
 Plugin 'thoughtbot/vim-rspec'
@@ -41,8 +57,6 @@ Plugin 'lucapette/vim-ruby-doc'
 Plugin 'ck3g/vim-change-hash-syntax'
 Plugin 'osyo-manga/vim-monster'
 Plugin 'grep.vim'
-"  Plugin 'nelstrom/vim-textobj-rubyblock'
-"*********************
 Plugin 'amirh/HTML-AutoCloseTag'
 Plugin 'flazz/vim-colorschemes'
 Plugin 'chrisgillis/vim-bootstrap3-snippets'
@@ -61,7 +75,6 @@ Plugin 'shougo/neocomplete.vim'
 Plugin 'Shougo/neosnippet'
 Plugin 'Shougo/neosnippet-snippets'
 Plugin 'honza/vim-snippets'
-"Plugin 'Shougo/neocomplete.vim.git'
 Plugin 'hail2u/vim-css3-syntax'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'matchit.zip'
@@ -80,31 +93,11 @@ filetype plugin indent on
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 let g:NERDDefaultAlign = 'left'
+let g:NERDTreeMapOpenInTab='\r'
 let g:NERDCommentEmptyLines = 1
 let g:NERDTrimTrailingWhitespace = 1
-"i
-"for CtrlP
-"let g:ctrlp_map = '&lt;c-p&gt;'
 let g:ctrlp_map = '<c-p>'
 let g:ctrlp_cmd = 'CtrlP'
-"let g:ctrlp_by_filename = 0
-"let g:ctrlp_working_path_mode=0
-"let g:ctrlp_user_command = [
-"    \ '.git', 'cd %s && git ls-files . -co --exclude-standard',
-"    \ 'find %s -type f' 
-"    \]
-"let g:ctrlp_working_path_mode = 'rcaw'
-"set background=dark
-"let g:ctrlp_root_markers = ['.acignore', '.gitignore', '.git']
-"let g:ctrlp_by_filename = 1
-"set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.idea/*,*/.DS_Store,.git/*,*/tmp/*,*.so,*.swp,*.zip
-"let g:ctrlp_custom_ignore = {
-"  \ 'dir':  '\v[\/]\.(git|hg|svn)$',
-"  \ 'file': '\v\.(exe|so|dll)$',
-"  \ 'link': 'some_bad_symbolic_links', 
-"  \}
-" NERDTtree
-"let NERDTreeQuitOnOpen=2
 let NERDTreeBookmarksFile=expand("$HOME/.vim-NERDTreeBookmarks")
 let NERDTreeShowBookmarks=1
 let NERDTreeChDirMode=2
@@ -121,9 +114,11 @@ let g:ruby_doc_ruby_mapping='kkn'
 let g:ruby_doc_ruby_host='http://apidock.com/ruby/'
 let g:unite_source_ruby_require_cmd = '$HOME/.rbenv/versions/2.3.1/bin/ruby'
 set nobackup       ""no backup files
+:set spelllang=en
 set noswapfile 
-set expandtab ts=2 sw=2 ai
-let g:indentLine_char = '|'
+set history=50
+set expandtab ts=2 sw=2
+let g:indentLine_char = '.'
 let g:indentLine_color_term = 239
 let g:indentLine_color_gui = '#A4E57E'
 let g:indentLine_color_tty_light = 7 " (default: 4)
@@ -207,18 +202,6 @@ inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
 " <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Close popup by <Space>.
-"inoremap <expr><Space> pumvisible() ? "\<C-y>" : "\<Space>"
-
-" AutoComplPop like behavior.
-"let g:neocomplete#enable_auto_select = 1
-
-" Shell like behavior(not recommended).
-"set completeopt+=longest
-"let g:neocomplete#enable_auto_select = 1
-"let g:neocomplete#disable_auto_complete = 1
-"inoremap <expr><TAB>  pumvisible() ? "\<Down>" : "\<C-x>\<C-u>"
-
 " Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
@@ -230,12 +213,6 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 if !exists('g:neocomplete#sources#omni#input_patterns')
   let g:neocomplete#sources#omni#input_patterns = {}
 endif
-"let g:neocomplete#sources#omni#input_patterns.php = '[^. \t]->\h\w*\|\h\w*::'
-"let g:neocomplete#sources#omni#input_patterns.c = '[^.[:digit:] *\t]\%(\.\|->\)'
-"let g:neocomplete#sources#omni#input_patterns.cpp = '[^.[:digit:] *\t]\%(\.\|->\)\|\h\w*::'
-
-" For perlomni.vim setting.
-" https://github.com/c9s/perlomni.vim
 let g:airline#extensions#branch#format = 'Git_flow_branch_format'
 let g:git_flow_prefixes = {
     \ 'master': '',
@@ -244,6 +221,24 @@ let g:git_flow_prefixes = {
     \ 'release': 'R:',
     \ 'hotfix': 'H:',
     \ 'support': 'S:',
-\ 'versiontag': 'V:' 
+    \ 'versiontag': 'V:' 
     \}
-let g:neocomplete#sources#omni#input_patterns.perl = '\h\w*->\h\w*\|\h\w*::'
+
+let g:user_emmet_mode='n'    "only enable normal mode functions.
+let g:user_emmet_mode='inv'  "enable all functions, which is equal to
+let g:user_emmet_mode='a'    "enable all function in all mode.
+let g:user_emmet_install_global = 0
+" RSpec.vim mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+let g:rspec_runner = "os_x_iterm2"
+
+
+" Copy/paste from system clipboard
+map <C-y> "+y<CR>
+map <C-p> "+P<CR>
+
+" Toogle mouse
+nnoremap <F8> :call ToggleMouse()<CR>
