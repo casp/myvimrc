@@ -1,34 +1,29 @@
-execute pathogen#infect()
-"noremap <LeftRelease> "+y<LeftRelease>
-"set guioptions+=a
+set clipboard=unnamed
 let mapleader = ","
 let g:mapleader = ","
 set ruler
 set showcmd
-set synmaxcol=128
+set synmaxcol=170
 set ttyfast
-set ttyscroll=3 
-set lazyredraw 
+set ttyscroll=3
+set lazyredraw
 set incsearch
 set laststatus=2
 set autowrite
 set tabstop=2
-set shiftwidth=2
 set expandtab
 set list listchars=tab:»·,trail:·,nbsp:·
 set nojoinspaces
+set numberwidth=5
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
 set nocompatible              " be iMproved, required
-"set clipboard=unnamedplus
 set mouse=a
-set guifont=Monaco:h13
+set guifont=Console:h13
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
 Plugin 'gmarik/vundle'
-Plugin 'tomtom/tlib_vim'
 Plugin 'mileszs/ack.vim'
-Plugin 'majutsushi/tagbar'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'altercation/vim-colors-solarized'
@@ -38,11 +33,9 @@ Plugin 'rhysd/conflict-marker.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-markdown'
-Plugin 'tpope/vim-cucumber'
 Plugin 'mattn/emmet-vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'renyard/vim-git-flow-format'
-Plugin 'tibabit/vim-todo'
 Plugin 'rstacruz/sparkup'
 Plugin 'othree/html5.vim'
 Plugin 'ain/vim-capistrano'
@@ -51,27 +44,19 @@ Plugin 'vim-ruby/vim-ruby'
 Plugin 'tpope/vim-bundler'
 Plugin 'slim-template/vim-slim'
 Plugin 'thoughtbot/vim-rspec'
-Plugin 'joonty/vdebug'
-Plugin 'astashov/vim-ruby-debugger'
-Plugin 'lucapette/vim-ruby-doc'
 Plugin 'ck3g/vim-change-hash-syntax'
 Plugin 'osyo-manga/vim-monster'
 Plugin 'grep.vim'
 Plugin 'amirh/HTML-AutoCloseTag'
 Plugin 'flazz/vim-colorschemes'
-Plugin 'chrisgillis/vim-bootstrap3-snippets'
 Plugin 'vim-airline/vim-airline'
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'powerline/fonts'
-Plugin 'kana/vim-textobj-user'
-Plugin 'kana/vim-textobj-indent'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-fugitive'
-Plugin 'mattn/webapi-vim'
 Plugin 'mattn/gist-vim'
 Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-commentary'
-Plugin 'shougo/neocomplete.vim'
 Plugin 'Shougo/neosnippet'
 Plugin 'Shougo/neosnippet-snippets'
 Plugin 'honza/vim-snippets'
@@ -80,12 +65,11 @@ Plugin 'terryma/vim-multiple-cursors'
 Plugin 'matchit.zip'
 Plugin 'easymotion/vim-easymotion'
 Plugin 'jistr/vim-nerdtree-tabs'
-Plugin 'reedes/vim-textobj-quote'
-Plugin 'reedes/vim-textobj-sentence'
 Plugin 'rhysd/unite-ruby-require.vim'
 Plugin 'Yggdroot/indentLine'
-Plugin 'eugen0329/vim-esearch'
-call vundle#end()  
+Plugin 'andrewradev/splitjoin.vim'
+Plugin 'andrewradev/switch.vim'
+call vundle#end()
 syntax on
 set number
 filetype plugin indent on
@@ -107,15 +91,11 @@ set cursorline
 set backspace=indent,eol,start
 set linespace=0
 set showmatch
-colorscheme znake 
+colorscheme molokai
 "Rubydoc
-let g:ruby_doc_command='open'
-let g:ruby_doc_ruby_mapping='kkn'
-let g:ruby_doc_ruby_host='http://apidock.com/ruby/'
-let g:unite_source_ruby_require_cmd = '$HOME/.rbenv/versions/2.3.1/bin/ruby'
 set nobackup       ""no backup files
 :set spelllang=en
-set noswapfile 
+set noswapfile
 set history=50
 set expandtab ts=2 sw=2
 let g:indentLine_char = '.'
@@ -123,24 +103,19 @@ let g:indentLine_color_term = 239
 let g:indentLine_color_gui = '#A4E57E'
 let g:indentLine_color_tty_light = 7 " (default: 4)
 let g:indentLine_color_dark = 1 " (default: 2)"
-left colorscheme molokai
-" Multi_cursor
-let g:multi_cursor_next_key='<C-n>'
-let g:multi_cursor_prev_key='<C-p>'
-let g:multi_cursor_skip_key='<C-x>'
-let g:multi_cursor_quit_key='<Esc>'
-let g:multi_cursor_start_key='<F6>'
-let g:multi_cursor_start_key='<C-n>'
-let g:multi_cursor_start_word_key='g<C-n>'
-let g:bookmark_auto_close = 1 
-
 " UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
 " If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-"Gitflow
+"Airline
+let g:airline_left_sep='>'
+let g:airline_right_sep='<'
+let g:airline_detect_modified=1
+let g:airline#extensions#tabline#enabled = 1
+let g:airline#extensions#tabline#left_sep = ' '
+let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#branch#format = 'Git_flow_branch_format'
 
 "MARKDOWN
@@ -161,14 +136,9 @@ autocmd FileType mail             let b:comment_leader = '> '
 autocmd FileType vim              let b:comment_leader = '" '
 noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
 noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'')
-"Note: This option must be set in .vimrc(_vimrc).  NOT IN .gvimrc(_gvimrc)!
-" Disable AutoComplPop.
 let g:acp_enableAtStartup = 0
-" Use neocomplete.
 let g:neocomplete#enable_at_startup = 1
-" Use smartcase.
 let g:neocomplete#enable_smart_case = 1
-" Set minimum syntax keyword length.
 let g:neocomplete#sources#syntax#min_keyword_length = 3
 let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
 
@@ -179,27 +149,46 @@ let g:neocomplete#sources#dictionary#dictionaries = {
     \ 'scheme' : $HOME.'/.gosh_completions'
         \ }
 
+nnoremap <Leader>r :RunInInteractiveShell<space>
+
+" Treat <li> and <p> tags like the block tags they are
+let g:html_indent_tags = 'li\|p'
+
+" Open new split panes to right and bottom, which feels more natural
+set splitbelow
+set splitright
+
+" Quicker window movement
+nnoremap <C-j> <C-w>j
+nnoremap <C-k> <C-w>k
+nnoremap <C-h> <C-w>h
+nnoremap <C-l> <C-w>l
+
+" configure syntastic syntax checking to check on open as well as save
+let g:syntastic_check_on_open=1
+let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
+let g:syntastic_eruby_ruby_quiet_messages =
+    \ {"regex": "possibly useless use of a variable in void context"}
+
+set complete+=kspell
+
+" Always use vertical diffs
+set diffopt+=vertical
+
 " Define keyword.
 if !exists('g:neocomplete#keyword_patterns')
     let g:neocomplete#keyword_patterns = {}
 endif
 let g:neocomplete#keyword_patterns['default'] = '\h\w*'
 
-" Plugin key-mappings.
 inoremap <expr><C-g>     neocomplete#undo_completion()
 inoremap <expr><C-l>     neocomplete#complete_common_string()
 
-" Recommended key-mappings.
-" <CR>: close popup and save indent.
 inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
 function! s:my_cr_function()
   return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-  " For no inserting <CR> key.
-  "return pumvisible() ? "\<C-y>" : "\<CR>"
 endfunction
-" <TAB>: completion.
 inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-" <C-h>, <BS>: close popup and delete backword char.
 inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
 inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
 " Enable omni completion.
@@ -211,7 +200,7 @@ autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
 
 " Enable heavy omni completion.
 if !exists('g:neocomplete#sources#omni#input_patterns')
-  let g:neocomplete#sources#omni#input_patterns = {}
+let g:neocomplete#sources#omni#input_patterns = {}
 endif
 let g:airline#extensions#branch#format = 'Git_flow_branch_format'
 let g:git_flow_prefixes = {
@@ -221,7 +210,7 @@ let g:git_flow_prefixes = {
     \ 'release': 'R:',
     \ 'hotfix': 'H:',
     \ 'support': 'S:',
-    \ 'versiontag': 'V:' 
+    \ 'versiontag': 'V:'
     \}
 
 let g:user_emmet_mode='n'    "only enable normal mode functions.
@@ -234,11 +223,31 @@ map <Leader>s :call RunNearestSpec()<CR>
 map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 let g:rspec_runner = "os_x_iterm2"
-
+let g:rspec_command = "!rspec --drb {spec}"
 
 " Copy/paste from system clipboard
 map <C-y> "+y<CR>
 map <C-p> "+P<CR>
 
-" Toogle mouse
-nnoremap <F8> :call ToggleMouse()<CR>
+let g:ackprg = 'ag --hidden --nogroup --nocolor --column --width 50 --ignore .git'
+let g:ack_autoclose = 1
+nnoremap <Leader>se :Ack!<Space>
+
+
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
+
+" Removes trailing spaces
+function TrimWhiteSpace()
+  %s/\s*$//
+  ''
+endfunction
+
+set list listchars=trail:.,extends:>
+autocmd FileWritePre * call TrimWhiteSpace()
+autocmd FileAppendPre * call TrimWhiteSpace()
+autocmd FilterWritePre * call TrimWhiteSpace()
+autocmd BufWritePre * call TrimWhiteSpace()
