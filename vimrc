@@ -8,22 +8,26 @@ set ttyfast
 set ttyscroll=3
 set lazyredraw
 set incsearch
+set hlsearch
 set laststatus=2
+let g:auto_save=1
 set autowrite
 set tabstop=2
 set expandtab
-set list listchars=tab:»·,trail:·,nbsp:·
+set listchars=tab:»·,trail:·,nbsp:·
 set nojoinspaces
 set numberwidth=5
 set rulerformat=%55(%{strftime('%a\ %b\ %e\ %I:%M\ %p')}\ %5l,%-6(%c%V%)\ %P%)
-set nocompatible              " be iMproved, required
 set mouse=a
-set guifont=Console:h13
+set guifont=Console:h16
+set nocompatible              " be iMproved, required
 filetype off
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+Plugin 'VundleVim/Vundle.vim'
 Plugin 'gmarik/vundle'
 Plugin 'mileszs/ack.vim'
+Plugin 'tpope/vim-rbenv'
 Plugin 'airblade/vim-gitgutter'
 Plugin 'scrooloose/nerdtree'
 Plugin 'altercation/vim-colors-solarized'
@@ -33,6 +37,7 @@ Plugin 'rhysd/conflict-marker.vim'
 Plugin 'jiangmiao/auto-pairs'
 Plugin 'ctrlpvim/ctrlp.vim'
 Plugin 'tpope/vim-markdown'
+Plugin 'tpope/vim-endwise'
 Plugin 'mattn/emmet-vim'
 Plugin 'SirVer/ultisnips'
 Plugin 'renyard/vim-git-flow-format'
@@ -55,7 +60,6 @@ Plugin 'powerline/fonts'
 Plugin 'scrooloose/syntastic'
 Plugin 'tpope/vim-fugitive'
 Plugin 'mattn/gist-vim'
-Plugin 'scrooloose/nerdcommenter'
 Plugin 'tpope/vim-commentary'
 Plugin 'Shougo/neosnippet'
 Plugin 'Shougo/neosnippet-snippets'
@@ -73,7 +77,6 @@ call vundle#end()
 syntax on
 set number
 filetype plugin indent on
-"NERD Commenter
 let g:NERDSpaceDelims = 1
 let g:NERDCompactSexyComs = 1
 let g:NERDDefaultAlign = 'left'
@@ -86,30 +89,31 @@ let NERDTreeBookmarksFile=expand("$HOME/.vim-NERDTreeBookmarks")
 let NERDTreeShowBookmarks=1
 let NERDTreeChDirMode=2
 noremap \\ :NERDTreeToggle
-
 set cursorline
 set backspace=indent,eol,start
 set linespace=0
 set showmatch
-colorscheme molokai
-"Rubydoc
+set splitbelow
+set splitright
+set complete+=kspell
+set diffopt+=vertical
 set nobackup       ""no backup files
-:set spelllang=en
+set spelllang=en
 set noswapfile
 set history=50
 set expandtab ts=2 sw=2
+set wildignore+=*/tmp/*,*.so,*.swp,*.zip,*.cache
 let g:indentLine_char = '.'
 let g:indentLine_color_term = 239
 let g:indentLine_color_gui = '#A4E57E'
 let g:indentLine_color_tty_light = 7 " (default: 4)
 let g:indentLine_color_dark = 1 " (default: 2)"
-" UltiSnips
 let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<c-b>"
 let g:UltiSnipsJumpBackwardTrigger="<c-z>"
-" If you want :UltiSnipsEdit to split your window.
 let g:UltiSnipsEditSplit="vertical"
-"Airline
+colorscheme molokai
+let g:airline_section_b= '%{strftime("%c")}'
 let g:airline_left_sep='>'
 let g:airline_right_sep='<'
 let g:airline_detect_modified=1
@@ -117,8 +121,8 @@ let g:airline#extensions#tabline#enabled = 1
 let g:airline#extensions#tabline#left_sep = ' '
 let g:airline#extensions#tabline#left_alt_sep = '|'
 let g:airline#extensions#branch#format = 'Git_flow_branch_format'
-
-"MARKDOWN
+nnoremap <C-tab> :bp<CR>
+nnoremap <C-S-tab>   :bn<CR>
 autocmd BufNewFile,BufReadPost *.md set filetype=markdown
 let g:markdown_languages = ['html', 'ruby', 'python', 'bash=sh']
 let g:esearch = {
@@ -137,71 +141,17 @@ autocmd FileType vim              let b:comment_leader = '" '
 noremap <silent> ,cc :<C-B>silent <C-E>s/^/<C-R>=escape(b:comment_leader,'\/')<CR>/<CR>:nohlsearch<CR>
 noremap <silent> ,cu :<C-B>silent <C-E>s/^\V<C-R>=escape(b:comment_leader,'')
 let g:acp_enableAtStartup = 0
-let g:neocomplete#enable_at_startup = 1
-let g:neocomplete#enable_smart_case = 1
-let g:neocomplete#sources#syntax#min_keyword_length = 3
-let g:neocomplete#lock_buffer_name_pattern = '\*ku\*'
-
-" Define dictionary.
-let g:neocomplete#sources#dictionary#dictionaries = {
-    \ 'default' : '',
-    \ 'vimshell' : $HOME.'/.vimshell_hist',
-    \ 'scheme' : $HOME.'/.gosh_completions'
-        \ }
-
-nnoremap <Leader>r :RunInInteractiveShell<space>
-
-" Treat <li> and <p> tags like the block tags they are
 let g:html_indent_tags = 'li\|p'
-
-" Open new split panes to right and bottom, which feels more natural
-set splitbelow
-set splitright
-
-" Quicker window movement
-nnoremap <C-j> <C-w>j
-nnoremap <C-k> <C-w>k
-nnoremap <C-h> <C-w>h
-nnoremap <C-l> <C-w>l
-
-" configure syntastic syntax checking to check on open as well as save
 let g:syntastic_check_on_open=1
 let g:syntastic_html_tidy_ignore_errors=[" proprietary attribute \"ng-"]
 let g:syntastic_eruby_ruby_quiet_messages =
     \ {"regex": "possibly useless use of a variable in void context"}
-
-set complete+=kspell
-
-" Always use vertical diffs
-set diffopt+=vertical
-
-" Define keyword.
-if !exists('g:neocomplete#keyword_patterns')
-    let g:neocomplete#keyword_patterns = {}
-endif
-let g:neocomplete#keyword_patterns['default'] = '\h\w*'
-
-inoremap <expr><C-g>     neocomplete#undo_completion()
-inoremap <expr><C-l>     neocomplete#complete_common_string()
-
-inoremap <silent> <CR> <C-r>=<SID>my_cr_function()<CR>
-function! s:my_cr_function()
-  return (pumvisible() ? "\<C-y>" : "" ) . "\<CR>"
-endfunction
-inoremap <expr><TAB>  pumvisible() ? "\<C-n>" : "\<TAB>"
-inoremap <expr><C-h> neocomplete#smart_close_popup()."\<C-h>"
-inoremap <expr><BS> neocomplete#smart_close_popup()."\<C-h>"
-" Enable omni completion.
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 autocmd FileType html,markdown setlocal omnifunc=htmlcomplete#CompleteTags
 autocmd FileType javascript setlocal omnifunc=javascriptcomplete#CompleteJS
 autocmd FileType python setlocal omnifunc=pythoncomplete#Complete
 autocmd FileType xml setlocal omnifunc=xmlcomplete#CompleteTags
-
 " Enable heavy omni completion.
-if !exists('g:neocomplete#sources#omni#input_patterns')
-let g:neocomplete#sources#omni#input_patterns = {}
-endif
 let g:airline#extensions#branch#format = 'Git_flow_branch_format'
 let g:git_flow_prefixes = {
     \ 'master': '',
@@ -212,7 +162,6 @@ let g:git_flow_prefixes = {
     \ 'support': 'S:',
     \ 'versiontag': 'V:'
     \}
-
 let g:user_emmet_mode='n'    "only enable normal mode functions.
 let g:user_emmet_mode='inv'  "enable all functions, which is equal to
 let g:user_emmet_mode='a'    "enable all function in all mode.
@@ -224,28 +173,23 @@ map <Leader>l :call RunLastSpec()<CR>
 map <Leader>a :call RunAllSpecs()<CR>
 let g:rspec_runner = "os_x_iterm2"
 let g:rspec_command = "!rspec --drb {spec}"
-
 " Copy/paste from system clipboard
 map <C-y> "+y<CR>
 map <C-p> "+P<CR>
-
 let g:ackprg = 'ag --hidden --nogroup --nocolor --column --width 50 --ignore .git'
 let g:ack_autoclose = 1
 nnoremap <Leader>se :Ack!<Space>
-
-
 highlight ExtraWhitespace ctermbg=red guibg=red
 match ExtraWhitespace /\s\+$/
 autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
 autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
 autocmd InsertLeave * match ExtraWhitespace /\s\+$/
-
+autocmd VimResized * :wincmd =
 " Removes trailing spaces
 function TrimWhiteSpace()
   %s/\s*$//
   ''
 endfunction
-
 set list listchars=trail:.,extends:>
 autocmd FileWritePre * call TrimWhiteSpace()
 autocmd FileAppendPre * call TrimWhiteSpace()
